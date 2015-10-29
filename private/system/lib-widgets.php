@@ -137,7 +137,7 @@ function WIDGET_autotranslations($header=0) {
             $retval .= 'hl=' . $key; // 2 character language code of google header bar (usually the same as tl below)
             $retval .= '&amp;sl=' . $_CONF['rdf_language']; // default language of your site
             $retval .= '&amp;tl=' . $key; // 2 character language code to translate site into (usually should be the same as hl above)
-            $retval .= '&amp;u=' . urlencode($_CONF['site_url'] . '?r=' . $randID); // address of your site appends a random string so Google won't cache the translated page
+            $retval .= '&amp;u=' . urlencode($_CONF['http_host'] . '?r=' . $randID); // address of your site appends a random string so Google won't cache the translated page
             $retval .= '"><img src="' . $_CONF['site_url'] . '/images/speck.gif" alt="'.$language.'" title="'.$language.'" /></a></li>';
         }
     }

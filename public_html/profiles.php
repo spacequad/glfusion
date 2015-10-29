@@ -305,7 +305,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg,$html=0)
 
     $dt = new Date('now',$_USER['tzid']);
 
-    $storyurl = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
+    $storyurl = COM_buildUrl($_CONF['http_host'] . '/article.php?story=' . $sid);
     if ($_CONF['url_rewrite']) {
         $retURL = $storyurl . '?msg=85';
     } else {
@@ -392,11 +392,11 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg,$html=0)
     }
     if ($A['commentcode'] == 0) { // comments allowed
         $mailtext .= $LANG08[24] . LB
-                  . COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                  . COM_buildUrl ($_CONF['http_host'] . '/article.php?story='
                                   . $sid . '#comments');
     } else { // comments not allowed - just add the story's URL
         $mailtext .= $LANG08[33] . LB
-                  . COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                  . COM_buildUrl ($_CONF['http_host'] . '/article.php?story='
                                   . $sid);
     }
 

@@ -277,7 +277,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
                 }
             }
 
-            $storylink = COM_buildUrl( $_CONF['site_url']
+            $storylink = COM_buildUrl( $_CONF['http_host']
                                        . '/article.php?story=' . $row['sid'] );
             $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion, $tid, $fid);
             if( $_CONF['trackback_enabled'] && ($feedType == 'RSS') && ($row['trackbackcode'] >= 0)) {
@@ -305,7 +305,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $content[] = $article;
         }
     }
-    $link = $_CONF['site_url'] . '/index.php?topic=' . $tid;
+    $link = $_CONF['http_host'] . '/index.php?topic=' . $tid;
     $update = implode( ',', $sids );
 
     return $content;
@@ -394,7 +394,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
             }
         }
 
-        $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='.$row['sid'] );
+        $storylink = COM_buildUrl( $_CONF['http_host'] . '/article.php?story='.$row['sid'] );
         $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion, $fid, ($frontpage_only ? '::frontpage' : '::all'));
         if( $_CONF['trackback_enabled'] && ($feedType == 'RSS') && ($row['trackbackcode'] >= 0)) {
             $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
@@ -420,7 +420,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $content[] = $article;
     }
 
-    $link = $_CONF['site_url'];
+    $link = $_CONF['http_host'];
     $update = implode( ',', $sids );
 
     return $content;
@@ -458,11 +458,11 @@ function SYND_updateFeed( $fid )
         if ($A['feedlogo'] != '' ) {
         	$image = new FeedImage();
         	$image->title = $A['title'];
-        	$image->url = $_CONF['site_url'] . $A['feedlogo'];
-    	    $image->link = $_CONF['site_url'];
+        	$image->url = $_CONF['http_host'] . $A['feedlogo'];
+    	    $image->link = $_CONF['http_host'];
         	$rss->image = $image;
         }
-        $rss->link = $_CONF['site_url'];
+        $rss->link = $_CONF['http_host'];
         if ( !empty( $A['filename'] )) {
             $filename = $A['filename'];
         } else {
@@ -512,7 +512,7 @@ function SYND_updateFeed( $fid )
             }
         }
         if (empty($link)) {
-            $link = $_CONF['site_url'];
+            $link = $_CONF['http_host'];
         }
 
         $rss->editor = $_CONF['site_mail'];
@@ -576,7 +576,7 @@ function SYND_getFeedUrl( $feedfile = '' )
     global $_CONF;
 
     $feedpath = SYND_getFeedPath();
-    $url = substr_replace ($feedpath, $_CONF['site_url'], 0,
+    $url = substr_replace ($feedpath, $_CONF['http_host'], 0,
                            strlen ($_CONF['path_html']) - 1);
     $url .= $feedfile;
 

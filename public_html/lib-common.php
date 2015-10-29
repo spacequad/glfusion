@@ -132,6 +132,24 @@ $config->initConfig();
 $_CONF = $config->get_config('Core');
 if ( $_CONF['cookiesecure']) @ini_set('session.cookie_secure','1');
 
+// reset URL
+$purl = parse_url($_CONF['site_url']);
+$url_scheme = $purl['scheme'];
+$url_host   = $purl['host'];
+$url_path   = isset($purl['path']) ? $purl['path'] : '';
+
+$_CONF['site_url'] = $url_path;
+$_CONF['http_host'] = $url_scheme.'://'.$url_host;
+
+$admin_purl = parse_url($_CONF['site_admin_url']);
+$admin_url_scheme = $admin_purl['scheme'];
+$admin_url_host   = $admin_purl['host'];
+$admin_url_path   = isset($admin_purl['path']) ? $admin_purl['path'] : '';
+
+$_CONF['site_admin_url'] = $admin_url_path;
+$_CONF['admin_http_host'] = $url_scheme.'://'.$admin_url_host;
+
+
 @date_default_timezone_set('America/Chicago');
 
 if (isset($_CONF['bb2_enabled']) && $_CONF['bb2_enabled']) {
@@ -3431,8 +3449,8 @@ function COM_emailUserTopics()
         $T->set_var('site_name',$_CONF['site_name']);
         $TT->set_var('site_name',$_CONF['site_name']);
 
-        $T->set_var('remove_msg',sprintf($LANG08[36],$_CONF['site_name'],$_CONF['site_url']));
-        $TT->set_var('remove_msg',sprintf($LANG08[37],$_CONF['site_name'],$_CONF['site_url']));
+        $T->set_var('remove_msg',sprintf($LANG08[36],$_CONF['site_name'],$_CONF['http_host']));
+        $TT->set_var('remove_msg',sprintf($LANG08[37],$_CONF['site_name'],$_CONF['http_host']));
 
         for( $y = 0; $y < $nsrows; $y++ ) {
             // Loop through stories building the requested email message
@@ -3456,7 +3474,7 @@ function COM_emailUserTopics()
                $story->_username = $output['username'];
                $story->_fullname = $output['fullname'];
             }
-            $story_url = COM_buildUrl( $_CONF['site_url'] . '/article.php?story=' . $S['sid'] );
+            $story_url = COM_buildUrl( $_CONF['http_host'] . '/article.php?story=' . $S['sid'] );
             $title     = COM_undoSpecialChars(  $S['title'] );
             if ( $_CONF['contributedbyline'] == 1 ) {
                 if ( empty( $authors[$S['uid']] )) {
@@ -5274,10 +5292,10 @@ function COM_getCurrentURL()
             $first_slash = strpos( $_CONF['site_url'], '/' );
             if ( $first_slash === false ) {
                 // special case - assume it's okay
-                $thisUrl = $_CONF['site_url'] . $document_uri;
+                $thisUrl = $_CONF['http_host'] . $document_uri;
             } else if ( $first_slash + 1 == strrpos( $_CONF['site_url'], '/' )) {
                 // site is in the document root
-                $thisUrl = $_CONF['site_url'] . $document_uri;
+                $thisUrl = $_CONF['http_host'] . $document_uri;
             } else {
                 // extract server name first
                 $pos = strpos( $_CONF['site_url'], '/', $first_slash + 2 );
@@ -5308,6 +5326,7 @@ function COM_getCurrentURL()
         if ( $firstslash === false ) {
             // special case - assume it's okay
             $thisUrl = $_CONF['site_url'] . $requestUri;
+$thisUrl = $_CONF['http_host'] . $requestUri;
         } else if ( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' )) {
             // site is in the document root
             $thisUrl = $_CONF['site_url'] . $requestUri;
@@ -5560,9 +5579,9 @@ function COM_createImage($url, $alt = "", $attr = array())
 
     $retval = '';
 
-    if (strpos($url, 'http://') !== 0 && strpos($url,'https://') !== 0 ) {
-        $url = $_CONF['layout_url'] . $url;
-    }
+//    if (strpos($url, 'http://') !== 0 && strpos($url,'https://') !== 0 ) {
+//        $url = $_CONF['layout_url'] . $url;
+//    }
     $attr_str = 'src="' . $url . '"';
 
     foreach ($attr as $key => $value) {

@@ -449,10 +449,10 @@ function requestpassword ($username, $msg = 0)
         DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",'uid', (int) $A['uid']);
 
         $mailtext = sprintf ($LANG04[88], $username);
-        $mailtext .= $_CONF['site_url'] . '/users.php?mode=newpwd&uid=' . $A['uid'] . '&rid=' . $reqid . "\n\n";
+        $mailtext .= $_CONF['http_host'] . '/users.php?mode=newpwd&uid=' . $A['uid'] . '&rid=' . $reqid . "\n\n";
         $mailtext .= $LANG04[89];
         $mailtext .= "{$_CONF['site_name']}\n";
-        $mailtext .= "{$_CONF['site_url']}\n";
+        $mailtext .= "{$_CONF['http_host']}\n";
 
         $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
         if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
@@ -540,12 +540,12 @@ function requesttoken ($uid, $msg = 0)
             echo COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
         }
         $verification_id = USER_createActivationToken($uid,$A['username']);
-        $activation_link = $_CONF['site_url'].'/users.php?mode=verify&vid='.$verification_id.'&u='.$uid;
+        $activation_link = $_CONF['http_host'].'/users.php?mode=verify&vid='.$verification_id.'&u='.$uid;
         $mailtext  = $LANG04[168] . $_CONF['site_name'] . ".\n\n";
         $mailtext .= $LANG04[170] . "\n\n";
         $mailtext .= "----------------------------\n";
         $mailtext .= $LANG04[2] . ': ' . $A['username'] ."\n";
-        $mailtext .= $LANG04[171] .': ' . $_CONF['site_url'] ."\n";
+        $mailtext .= $LANG04[171] .': ' . $_CONF['http_host'] ."\n";
         $mailtext .= "----------------------------\n\n";
         $mailtext .= sprintf($LANG04[172],($_SYSTEM['verification_token_ttl']/3600)) . "\n\n";
         $mailtext .= $activation_link . "\n\n";
@@ -553,7 +553,7 @@ function requesttoken ($uid, $msg = 0)
         $mailtext .= $LANG04[174] . "\n\n";
         $mailtext .= "--\n";
         $mailtext .= $_CONF['site_name'] . "\n";
-        $mailtext .= $_CONF['site_url'] . "\n";
+        $mailtext .= $_CONF['http_host'] . "\n";
 
         $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
         if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
@@ -1364,10 +1364,10 @@ switch ($mode) {
                     // which we are requesting information from.
                     header('Location: ' . $consumer->handle_request(
                             $server_id, $server_url,
-                            oidUtil::append_args($_CONF['site_url'] . '/users.php',
+                            oidUtil::append_args($_CONF['http_host'] . '/users.php',
                                 array('openid_login' => '1',
                                       'open_id' => $identity_url)), // Return to.
-                            $_CONF['site_url'], // Trust root.
+                            $_CONF['http_host'], // Trust root.
                             null,
                             "email,nickname,fullname")); // Required fields.
                     exit;
@@ -1416,7 +1416,7 @@ switch ($mode) {
 
                 $consumer = new OAuthConsumer($service);
 
-                $callback_url = $_CONF['site_url'] . '/users.php?oauth_login=' . $service;
+                $callback_url = $_CONF['http_host'] . '/users.php?oauth_login=' . $service;
 
                 $consumer->setRedirectURL($callback_url);
                 $oauth_userinfo = $consumer->authenticate_user();
@@ -1461,7 +1461,7 @@ switch ($mode) {
                 }
             }
             COM_resetSpeedlimit('login');
-
+// @CHECK
             // we are now fully logged in, let's see if there is someplace we need to go....
             if (!empty($_SERVER['HTTP_REFERER'])
                     && (strstr($_SERVER['HTTP_REFERER'], '/users.php') === false)
