@@ -227,6 +227,9 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 {
     global $_TABLES, $_CONF, $LANG01;
 
+    $tmp_url = $_CONF['site_url'];
+    $_CONF['site_url'] = $_CONF['http_host'];
+
     $content = array ();
     $sids = array();
 
@@ -308,6 +311,8 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
     $link = $_CONF['http_host'] . '/index.php?topic=' . $tid;
     $update = implode( ',', $sids );
 
+    $_CONF['site_url'] = $tmp_url;
+
     return $content;
 }
 
@@ -326,6 +331,9 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $contentLength, $feedType, $feedVersion, $fid)
 {
     global $_TABLES, $_CONF, $LANG01;
+
+    $tmp_url = $_CONF['site_url'];
+    $_CONF['site_url'] = $_CONF['http_host'];
 
     $where = '';
     if( !empty( $limit )) {
@@ -422,7 +430,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
 
     $link = $_CONF['http_host'];
     $update = implode( ',', $sids );
-
+    $_CONF['site_url'] = $tmp_url;
     return $content;
 }
 
@@ -435,6 +443,9 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
 function SYND_updateFeed( $fid )
 {
     global $_CONF, $_TABLES, $_SYND_DEBUG;
+
+    $tmp_url = $_CONF['site_url'];
+    $_CONF['site_url'] = $_CONF['http_host'];
 
     require_once $_CONF['path'].'/lib/feedcreator/feedcreator.class.php';
 
@@ -529,6 +540,7 @@ function SYND_updateFeed( $fid )
 
         DB_query( "UPDATE {$_TABLES['syndication']} SET updated = NOW(), update_info = $data WHERE fid = '".DB_escapeString($fid)."'");
     }
+    $_CONF['site_url'] = $tmp_url;
 }
 
 /**
