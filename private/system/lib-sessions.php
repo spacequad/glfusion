@@ -39,7 +39,7 @@ if (!defined ('GVERSION')) {
 // ensure cookie domain is properly initialized
 
 if (empty ($_CONF['cookiedomain'])) {
-    preg_match ("/\/\/([^\/:]*)/", $_CONF['site_url'], $server);
+    preg_match ("/\/\/([^\/:]*)/", $_CONF['http_host'], $server);
     if (substr ($server[1], 0, 4) == 'www.') {
         $_CONF['cookiedomain'] = substr ($server[1], 3);
     } else {
