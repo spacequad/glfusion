@@ -60,7 +60,7 @@ if (version_compare(PHP_VERSION,'5.3.0','<')) {
 */
 
 if (!defined ('GVERSION')) {
-    define('GVERSION', '1.6.1');
+    define('GVERSION', '1.6.2');
 }
 
 define('PATCHLEVEL','.pl0');
@@ -3885,8 +3885,10 @@ function COM_getMessage()
     $msg = 0;
     if ( isset($_POST['msg']) ) {
         $msg = COM_applyFilter($_POST['msg'],true);
+        unset($_POST['msg']);
     } elseif ( isset($_GET['msg']) ) {
         $msg = COM_applyFilter($_GET['msg'],true);
+        unset($_GET['msg']);
     } elseif ( SESS_isSet('glfusion.infomessage') ) {
         $msg = COM_applyFilter(SESS_getVar('glfusion.infomessage'),true);
         SESS_unSet('glfusion.infomessage');
@@ -4907,7 +4909,9 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
              . ")) AND ({$table}perm_group >= $access)) OR ";
         $sql .= "({$table}perm_members >= $access)";
     } else {
-        $sql .= "{$table}perm_anon >= $access";
+        $sql .= "(({$table}group_id IN (" . implode( ',', $UserGroups )
+             . ")) AND ({$table}perm_group >= $access)) OR ";
+        $sql .= "({$table}perm_anon >= $access)";
     }
 
     $sql .= ')';

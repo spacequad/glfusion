@@ -1,5 +1,26 @@
 Please view this file on the master branch, on other branches it's out of date.
 
+v1.6.2 (unreleased)
+  - Media Gallery themes converted to UIKIT based styles
+  - Media Gallery - minor improvements to album view / media view templates
+  - Added reset password option to fusionrescue.php
+  - Tweaked tm-block-footer style to provide better color combination for copyright
+  - Added Driven by glFusion link in footer template
+  - Media Gallery - did not honor the album configured sort order
+  - Media Gallery - long titles would push the admin menu down off navbar
+  - Forum - fixed issue where quotes in forum post subject where replaced with &quote;
+  - Implemented Non-Logged-in User group support - allows groups to now include non-logged-in users
+  - Media Gallery - Fixed issue in album edit - unable to set group ownership due to wrong template var name being used
+  - Fixed issue with message handling (i.e.; ... saved successfully) interaction with plugins
+  - Media Gallery - MP3 playblack - fallback to flash player would fail
+  - Polls Plugin - Update to v2.2.1
+    - Fixed issue where poll voter data could be overwritten
+    - Fixed issue where poll voter data was being purged incorrectly
+    - Fixed issue where deleting a poll did not delete the corresponding voter data
+  - headlines auto tag - panel template was missing a closing </div>
+  - Story instance - dynamic auto tags would get cached and no longer be dynamic
+  - Fixed issue in version check where it did not properly detect pl versions
+
 v1.6.1 (September 13, 2016)
   - Reworked user profile latest comment listing - fixed issue where selection of a comment to view would result in a blank page - Updated to display all comments types, not just stories
   - Fixed another long standing error in FileMgmt where filenames with spaces in them would not always download properly
