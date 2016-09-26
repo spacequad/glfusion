@@ -1,6 +1,15 @@
 Please view this file on the master branch, on other branches it's out of date.
 
 v1.6.2 (unreleased)
+  = Fixed issue with infinite scroll where it did not properly process responsive elements in the newly loaded content
+  - Updated tar / zip processing for PHP 7 compatibility
+  - Plugin Upload - now allows for plugin archives directly from Git repositories
+  - Story templates by topic was not checking ?topic in URL
+  - Media Gallery - Improved handling of video / audio playback for lightbox album theme
+  - Set Auto Translation block to disabled on new installs
+  - Removed tab slider example from home page on new installs
+  - Added missing #comments component to URLs in story templates
+  - Fixed incorrect column header in global story attribute editor
   - Media Gallery themes converted to UIKIT based styles
   - Media Gallery - minor improvements to album view / media view templates
   - Added reset password option to fusionrescue.php

@@ -207,6 +207,8 @@ mt_srand( (10000000000 * (float)$usec) ^ (float)$sec );
 // | Library Includes                                                         |
 // +--------------------------------------------------------------------------+
 
+require_once($_CONF['path'].'vendor/autoload.php');
+
 /**
 * If needed, add our PEAR path to the list of include paths
 *
@@ -1286,7 +1288,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
             . $copyrightyear . ' ' . $_CONF['site_name'] );
     $theme->set_var( 'current_year', $year );
     $theme->set_var( 'lang_copyright', $LANG01[93] );
-    $theme->set_var( 'trademark_msg', $LANG01[94] );
+    $theme->set_var( 'trademark_msg', $LANG01[101] );
     $theme->set_var( 'powered_by', $LANG01[95]);
     $theme->set_var( 'glfusion_url', 'http://www.glfusion.org/' );
     $theme->set_var( 'glfusion_version', GVERSION );
@@ -6346,26 +6348,23 @@ function COM_decompress($file, $target)
 
     // .tar, .tar.bz, .tar.gz, .tgz
     if (in_array($ext, array('tar','bz','bz2','gz','tgz'))) {
-
-        require_once 'Archive/Tar.php';
-
-        $tar = new Archive_Tar($file);
-
-        $ok = $tar->extract($target);
-        if ( $ok ) {
-            $ok = 1;
+        try {
+            $tar = new \splitbrain\PHPArchive\Tar();
+            $tar->open($file);
+            $tar->extract($target);
+        } catch (\splitbrain\PHPArchive\ArchiveIOException $e) {
+            return false;
         }
-        return ($ok<1?false:true);
-
+        return true;
     } else if ($ext == 'zip') {
-
-      require_once $_CONF['path'].'/lib/ZipLib.class.php';
-
-      $zip = new ZipLib();
-      $ok = $zip->Extract($file, $target);
-
-      return ($ok==-1?false:true);
-
+        try {
+            $zip = new \splitbrain\PHPArchive\Zip();
+            $zip->open($file);
+            $zip->extract($target);
+        } catch (\splitbrain\PHPArchive\ArchiveIOException $e) {
+            return false;
+        }
+        return true;
     }
 
     // unsupported file type
