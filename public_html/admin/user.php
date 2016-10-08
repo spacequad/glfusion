@@ -1891,7 +1891,7 @@ function USER_save($uid)
         if ($userChanged) {
             PLG_userInfoChanged ($uid);
         }
-        CACHE_remove_instance('mbmenu');
+        CACHE_remove_instance('menu');
         $errors = DB_error();
         if (empty($errors)) {
             echo PLG_afterSaveSwitch (
@@ -2114,9 +2114,11 @@ function USER_batchAdmin()
 
     $display .= ADMIN_createMenu(
         $menu_arr,
-        $desc,
+        '', //$desc,
         $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE
     );
+
+    $display .= '<div class="batch-admin_filter">'.$desc.'</div>';
 
     $token = SEC_createToken();
     $form_arr['bottom'] = "<input type=\"hidden\" name=\"" . CSRF_TOKEN
@@ -2164,7 +2166,7 @@ function USER_batchDeleteExec()
             }
         }
 
-        CACHE_remove_instance('mbmenu');
+        CACHE_remove_instance('menu');
 
         COM_numberFormat($c); // just in case we have more than 999 ...
         $msg .= "{$LANG28[71]}: $c {$LANG28[102]}.<br/>\n";
@@ -2380,7 +2382,7 @@ function USER_importExec()
     } // end foreach
 
     unlink ($filename);
-    CACHE_remove_instance('mbmenu');
+    CACHE_remove_instance('menu');
     $retval .= '<p>' . sprintf ($LANG28[32], $successes, $failures);
 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -2427,7 +2429,7 @@ function USER_delete($uid)
     if (!USER_deleteAccount ($uid)) {
         return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     }
-    CACHE_remove_instance('mbmenu');
+    CACHE_remove_instance('menu');
     COM_setMessage(22);
     return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
 }
