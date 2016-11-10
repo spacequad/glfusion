@@ -304,6 +304,7 @@ function FF_formatTextBlock($str,$postmode='html',$mode='',$status = 0) {
     $bbcode->setGlobalCaseSensitive (false);
     $filter = sanitizer::getInstance();
 
+    $status = (int) $status;
 
     if ($postmode == 'text' ) {
         $_ff_pm = 'text';
@@ -324,7 +325,7 @@ function FF_formatTextBlock($str,$postmode='html',$mode='',$status = 0) {
 
 //    $bbcode->addParser(array('block','inline','link','listitem'), '_ff_fixtemplate');
 
-    if ( ! ($status & DISABLE_BBCODE ) ) {
+    if ( ! ( $status & DISABLE_BBCODE ) ) {
 
         $bbcode->addParser ('list', 'bbcode_stripcontents');
         $bbcode->addCode ('code', 'usecontent', 'do_bbcode_code', array ('usecontent_param' => 'default'),
@@ -573,8 +574,9 @@ function _ff_preparefordb($message,$postmode) {
     if ($_FF_CONF['use_censor']) {
         $message = COM_checkWords($message);
     }
+    $filter = sanitizer::getInstance();
+    $message = $filter->prepareForDB($message);
 
-    $message = DB_escapeString($message);
     return $message;
 }
 
